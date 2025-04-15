@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 
+import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
+
 type TimerProps = {
     duration: number;
     isRunning: boolean;
@@ -48,16 +50,25 @@ type TimerProps = {
     }, [duration]);
     
     // Calculate the width percentage for the progress bar
-    const widthPercentage = ((timeLeft / duration) * 100);
+    const percentage = ((timeLeft / duration) * 100);
 
     return (
-        <div className="mt-16 bg-gray-800 text-center border-solid border-white p-2 rounded relative">
-            <div
-                className="absolute left-0 top-0 h-full bg-gray-400 transition-all duration-1000 ease-linear"
-                style={{ width: `${widthPercentage}%`, transform: 'translateX(-50%)', left: '50%' }}
-            />
-            <span className="text-md relative z-10">Time left: {timeLeft}s</span>
-        </div>
+      
+        <div className="mx-auto" style={{ width: 50, height: 50 }}>
+            <CircularProgressbarWithChildren
+              value={percentage}
+              styles={buildStyles({
+                pathColor: '#ff4d4d',
+                textColor: '#ffffff'
+              })}
+            >
+              <div className="mb-1 mr-px-10" style={{ color: '#ffffff', fontSize: '20px' }}>
+                {timeLeft}
+              </div>
+
+            </CircularProgressbarWithChildren>
+      </div>
+
     );
   };
 

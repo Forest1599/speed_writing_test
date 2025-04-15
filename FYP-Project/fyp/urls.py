@@ -1,8 +1,8 @@
 from django.urls import path
-from . import views
+from fyp.views.typing_session_views import GetWordView, TypingSessionCreateView
+
 
 urlpatterns = [
-    # path("", views.home, name="home"),
-    path("api/test/", views.test_api)
-
+    path("words/", GetWordView.as_view(), name="get_words"),
+    path("typing-sessions/", TypingSessionCreateView.as_view(), name="typing-session-create")
 ]
