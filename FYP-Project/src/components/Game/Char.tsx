@@ -33,7 +33,7 @@ const getCharClassName = (
 }
 
 const Char: React.FC<CharProps> = ({
-  char, 
+  char,
   typedChar, 
   isCurrent, 
   isCompleted, 
@@ -45,7 +45,7 @@ const Char: React.FC<CharProps> = ({
 
   return (
     
-    // Maybe make the cursor smooth 
+        // Maybe make the cursor smooth 
         <span className="relative inline-block text-center">
             {shouldShowCursor && (
                 <span className="absolute left-0 top-0 -translate-x-[3px]">

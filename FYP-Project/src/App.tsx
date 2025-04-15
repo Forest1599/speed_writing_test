@@ -3,6 +3,7 @@
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider, Navigate } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout'
 import HeroIndex from './components/Game/HeroIndex';
+import TypingTest from './components/Game/TypingTest';
 
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
@@ -22,10 +23,10 @@ function Logout() {
   return <Navigate to="/login"/>
 }
 
-function RegisterAndLogout () {
-  localStorage.clear();
-  return <Register/>
-}
+// function RegisterAndLogout () {
+//   localStorage.clear();
+//   return <Register/>
+// }
 
 
 
@@ -39,7 +40,7 @@ function App() {
 
       <Route path='/' element={<MainLayout/>}>
         <Route index element={
-            <HeroIndex/>
+            <TypingTest/>
         }></Route>
         
         <Route path="/login" element={<Login/>}></Route>

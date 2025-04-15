@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-
-import { useAuth } from '../AuthContext'; // Check this after
+import { useState } from "react";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faKeyboard } from '@fortawesome/free-regular-svg-icons/faKeyboard';
@@ -12,7 +10,7 @@ import { ACCESS_TOKEN } from "../../constants/constants";
 const Navbar = () => {
 
     // const { isLoggedIn } = useAuth();
-    const [ isLoggedIn, setIsLoggedIn ] = useState(!!localStorage.getItem(ACCESS_TOKEN));
+    const [ isLoggedIn ] = useState(!!localStorage.getItem(ACCESS_TOKEN));
 
 
   return (

@@ -1,4 +1,4 @@
-import { CompletedWord } from "../../types/types";
+import { CompletedWord } from "../../types/CompletedWord";
 import api from "./api";
 
 

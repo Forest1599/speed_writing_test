@@ -1,4 +1,4 @@
-import { CompletedWord } from "../types/types";
+import { CompletedWord } from "../types/CompletedWord";
 
 export const selectWordsToStore = (completedWords: CompletedWord[]): CompletedWord[] => {
   const incorrectWords = completedWords.filter(word => !word.isCorrect);

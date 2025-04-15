@@ -32,6 +32,7 @@
   color: white;
 }
 
+
 .main-text {
   color: #5e5e5e;
 }
@@ -45,6 +46,8 @@
     opacity: 0;
   }
 }
+
+
 
 .animate-blink {
   animation: blink 1s ease-in-out infinite;
