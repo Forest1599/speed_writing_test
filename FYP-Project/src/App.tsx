@@ -1,8 +1,7 @@
 // import { useState } from 'react'
 
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider, Navigate } from 'react-router-dom';
-import MainLayout from './layouts/MainLayout'
-import HeroIndex from './components/Game/HeroIndex';
+import MainLayout from './layouts/MainLayout';
 import TypingTest from './components/Game/TypingTest';
 
 import Login from './pages/auth/Login';
@@ -14,6 +13,8 @@ import Profile from './pages/Profile';
 import ProtectedRoute from './Routes/ProtectedRoute';
 
 import './App.css'
+import RandomTest from './pages/RandomTest';
+import AdaptiveTest from './pages/AdaptiveTest';
 //import { AuthProvider } from './components/AuthContext';
 
 // When the user tries to logout,
@@ -40,9 +41,15 @@ function App() {
 
       <Route path='/' element={<MainLayout/>}>
         <Route index element={
-            <TypingTest/>
+            <RandomTest/>
         }></Route>
-        
+
+        <Route path="/adaptive" element={
+          <ProtectedRoute>
+            <AdaptiveTest/>  
+          </ProtectedRoute>
+        }></Route>
+
         <Route path="/login" element={<Login/>}></Route>
         <Route path="/logout" element={<Logout/>} ></Route>
         <Route path="/register" element={<Register/>}></Route>

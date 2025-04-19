@@ -1,14 +1,8 @@
-import { useState, useEffect, useMemo, KeyboardEvent } from 'react';
+import { useState, KeyboardEvent } from 'react';
 import { CompletedWord } from '../types/CompletedWord';
 
-const useTypingSession = (words: string[], {
-    wordsPerLine,
-    maxLines,
-}: {
-    maxLines: number;
-    wordsPerLine: number;
-  }) => {
-
+const useTypingSession = (words: string[]) => {
+  
   // The current user input
   const [userInput, setUserInput] = useState("");
 
@@ -24,26 +18,10 @@ const useTypingSession = (words: string[], {
   // Backspace count per word
   const [backspaceCount, setBackspaceCount] = useState<number>(0);
 
-  // Visible words to the use at any given time of the test
-  const [currentLine, setCurrentLine] = useState<number>(0);
-
-  // Memoized line calculations rerenders when words or currentLine changes
-  // Sets the current visible words 
-  const visibleWords = useMemo(() => {
-    const lines: string[][] = [];
-    for (let i = 0; i < maxLines; i++) {
-      const startIndex = (currentLine + i) * wordsPerLine;
-
-      // Gets the 10 words and pushes it into the lines array
-      lines.push(words.slice(startIndex, startIndex + wordsPerLine));
-    }
-
-    return lines;
-  }, [words, currentLine]);
-
 
   // Handle keyboard input
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    // const currentWord: string = words[currentWordIndex];
     const currentWord: string = words[currentWordIndex];
 
     // Ignore modifier keys except Backspace and Space
@@ -67,26 +45,21 @@ const useTypingSession = (words: string[], {
     if (charIndex === 0 && currentWordIndex > 0) {
 
       // Only allow going back within the current lines
-      const currentLineStart = Math.floor(currentWordIndex / wordsPerLine) * wordsPerLine;
+      // Handle going back to the old line
+      // const currentLineStart = Math.floor(currentWordIndex / wordsPerLine) * wordsPerLine;
 
-      // If the first character i.e moves to the previous word
-      if (currentWordIndex > currentLineStart) {
-        // Move to the previous word the user inputted
-        const previousInput = completedWords[currentWordIndex - 1];
-
-        setUserInput(previousInput.typedWord);
-        setCharIndex(previousInput.typedWord.length);
-        setBackspaceCount(previousInput.backspaceCount); // restores the backspace count
-        setCurrentWordIndex(currentWordIndex - 1);
-
-        // Remove the completed word from the list
-        setCompletedWords(completedWords.slice(0, -1));
-      }
+      // Move to the previous word the user inputted
+      const previousWord = completedWords[completedWords.length - 1];
+      
+      setCompletedWords((prev) => prev.slice(0, -1));
+      setCurrentWordIndex((prev) => prev - 1);
+      setUserInput(previousWord.typedWord);
+      setCharIndex(previousWord.typedWord.length);
+      setBackspaceCount(previousWord.backspaceCount + 1);
 
     } else if (charIndex > 0) { // If not the first character
 
       setBackspaceCount((prev) => prev + 1); // adds a backspace
-
       setUserInput(userInput.slice(0, -1)); // removes the last char from user Input
       setCharIndex(charIndex - 1);
     }
@@ -95,13 +68,14 @@ const useTypingSession = (words: string[], {
 
   // Handles when space is clicked
   const handleSpace = (currentWord: string) => {
+
     if (charIndex < 1) return; // Do not allow space as first character
 
     // Adds a new word to the completedWords
     setCompletedWords((prev) => [
       ...prev,
       {
-        targetWord: words[currentWordIndex],
+        targetWord: currentWord,
         typedWord: userInput,
         isCorrect: userInput.trim() === currentWord,
         backspaceCount: backspaceCount
@@ -111,13 +85,18 @@ const useTypingSession = (words: string[], {
     // Clear the indexes
     setUserInput("");
     setCharIndex(0);
-    setCurrentWordIndex(currentWordIndex + 1);
     setBackspaceCount(0);
+    setCurrentWordIndex(prev => prev + 1);
 
-    if ((currentWordIndex + 1) % wordsPerLine === 0) { // If we have reached the end of the line
-      handleLineCompletion();
-    }
+    // Scroll words if we pass the last visible line
+    // const currentLine = Math.floor(currentWordIndex / wordsPerLine);
+    // const nextLine = Math.floor((currentWordIndex + 1) / wordsPerLine);
+
+    // if (nextLine > currentLine) {
+    //   setScrollOffset((prev) => prev + wordsPerLine);
+    // }
   }
+
 
   const handleCharacterInput = (key: string, currentWord: string) => {
     if (charIndex < currentWord.length) {
@@ -128,38 +107,38 @@ const useTypingSession = (words: string[], {
     }
   }
 
-  const handleLineCompletion = () => {
+  // const handleLineCompletion = () => {
     
-    // This essentially triggers for the visible lines to change
-    setCurrentLine(prev => {
-      const nextLine = prev + 1;
+  //   // This essentially triggers for the visible lines to change
+  //   setCurrentLine(prev => {
+  //     const nextLine = prev + 1;
       
-      // Only if it reaches the end (shouldn't happen)
-      if ((nextLine + maxLines) * wordsPerLine >= words.length) {
-        return prev;
-      }
+  //     // Only if it reaches the end (shouldn't happen)
+  //     if ((nextLine + maxLines) * wordsPerLine >= words.length) {
+  //       return prev;
+  //     }
 
-      return nextLine;
-    })
-  }
+  //     return nextLine;
+  //   })
+  // }
 
   const handleReset = () => {
-    setUserInput("");
+    setUserInput('');
     setCompletedWords([]);
-    setCurrentWordIndex(0);
     setCharIndex(0);
-    setCurrentLine(0);
-
+    setCurrentWordIndex(0);
+    setBackspaceCount(0);
+    // setScrollOffset(0);
   }
 
   return {
     userInput,
-    currentWordIndex,
     completedWords,
-    currentLine,
-    visibleWords,
+    currentWordIndex,
+    // visibleWords,
     handleKeyPress,
     handleReset,
+    // scrollOffset,
   };
 }
 

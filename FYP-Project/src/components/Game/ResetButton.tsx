@@ -14,7 +14,7 @@ const ResetButton: React.FC<ResetButtonProps> = ({ resetGame }) => {
             <button 
                 onClick={resetGame}
                 className='text-gray-500 hover:text-white transition-colors duration-200'>
-                <FontAwesomeIcon icon={faArrowRotateLeft}/>
+                <FontAwesomeIcon icon={faArrowRotateLeft} size="lg"/>
             </button>
         </div>
     );

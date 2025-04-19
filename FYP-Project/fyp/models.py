@@ -14,6 +14,7 @@ class TypingSession(models.Model):
     frequency_rank = models.IntegerField(default=500)
     
     timestamp = models.DateTimeField(auto_now_add=True)
+    mode = models.CharField(max_length=10, default="random")
     
     # Default string implementation
     def __str__(self,) -> str:

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchWords } from '../components/api/WordService';
 
-const useWordProvider = () => {
+const useWordProvider = (mode: 'random' | 'adaptive' = 'random') => {
   const [words, setWords] = useState<string[]>([]);
   const [settings, setSettings] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -11,7 +11,7 @@ const useWordProvider = () => {
     setIsLoading(true);
 
     try {
-      const data = await fetchWords();
+      const data = await fetchWords(mode);
       setWords(data.words);
       setSettings(data.settings);
       setError(null);

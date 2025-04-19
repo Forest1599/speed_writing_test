@@ -1,8 +1,8 @@
 // useAuthForm.ts
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '../../constants/constants';
-import api from '../api/api';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants/constants';
+import api from '../components/api/api';
 
 export const useAuthForm = (route: string, method: string) => {
   const [username, setUsername] = useState('');

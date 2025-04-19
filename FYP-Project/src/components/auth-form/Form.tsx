@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FormField } from "./FormField";
-import { useAuthForm } from "./usetAuthForm";
+import { useAuthForm } from "../../hooks/usetAuthForm";
 import { FormMessage } from "./FormMessage";
 import { FormLink } from "./FormLink";
 
@@ -41,7 +41,7 @@ export const Form: React.FC<FormProps> = ({
 
     return (
         <div className="flex justify-center items-center mt-20">
-            <form onSubmit={handleSubmit} className="bg-neutral-700 p-8 rounded-xl shadow-lg w-96">
+            <form onSubmit={handleSubmit} className="bg-gray-800 p-8 rounded-xl shadow-lg w-96">
                 <h1 className="text-3xl font-bold text-white mb-6 text-center">{formName}</h1>
 
                 <FormMessage type="error" message={error} />

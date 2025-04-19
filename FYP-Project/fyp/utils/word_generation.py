@@ -24,11 +24,22 @@ def get_typing_difficulty(user):
     max_len = DEFAULT_MAX_LEN
     freq_rank = DEFAULT_FREQ_RANK
 
-    all_sessions = TypingSession.objects.filter(user=user).order_by('-timestamp')
+    all_sessions = TypingSession.objects.filter(user=user, mode="adaptive").order_by('-timestamp')
     session_count = all_sessions.count()
 
+    # Start from the latest used settings (if they exist)
+    if session_count > 0:
+        latest = all_sessions[0]
+        min_len = latest.min_word_length
+        max_len = latest.max_word_length
+        freq_rank = latest.frequency_rank
+    else:
+        min_len = DEFAULT_MIN_LEN
+        max_len = DEFAULT_MAX_LEN
+        freq_rank = DEFAULT_FREQ_RANK
+        
     # Only adapt difficulty every 3rd session
-    if session_count >= 4 and session_count % 3 == 0:
+    if session_count >= 3 and session_count % 3 == 0:
         latest = all_sessions[0]
         recent_sessions = all_sessions[1:4]  # last 3 before latest
 

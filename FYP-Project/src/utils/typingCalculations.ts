@@ -35,22 +35,3 @@ export const calculateTypingResults = (completedWords: CompletedWord[]): TypingR
   };
 };
 
-// const calculateResults = () => {
-//     const totalWords = completedWords.length;
-//     const correctCount = completedWords.filter(word => word.isCorrect).length;
-//     const incorrectCount = totalWords - correctCount;
-  
-//     const correctChars = completedWords.reduce((acc, word) => {
-//       return acc + [...word.typedWord].filter((char, i) => char === word.targetWord[i]).length;
-//     }, 0);
-  
-//     const totalTypedChars = completedWords.reduce((acc, word) => acc + word.typedWord.length, 0);
-//     const totalBackspaces = completedWords.reduce((acc, word) => acc + word.backspaceCount, 0);
-  
-//     const accuracyCalc = correctChars / (totalTypedChars + totalBackspaces);
-  
-//     setCorrectWords(correctCount);
-//     setIncorrectWords(incorrectCount);
-//     setWpm(correctCount); // you can later refine WPM if needed
-//     setAccuracy(Math.round(accuracyCalc * 100));
-// }

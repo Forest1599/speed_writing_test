@@ -1,40 +1,47 @@
 import { useRef } from 'react';
-import useTypingTestB from '../../hooks/useTypingTestB';
+import useTypingTest from '../../hooks/useTypingTest';
 import HiddenInput from './HiddenInput';
 import Timer from './Timer';
 import ResultScreen from './ResultScreen';
 import TextTypingArea from './TextTypingArea';
+
 import ResetButton from './ResetButton';
 import { GameState } from '../../types/GameState';
 
+type TypingTestProps = {
+  mode: 'random' | 'adaptive'
+}
 
-const TypingTest = () => {
+const TypingTest: React.FC<TypingTestProps> = ({mode}) => {
   const gameOptions = {
-    maxLines: 3,
-    wordsPerLine: 10,
     gameDuration: 10,
+    mode: mode,
   };
 
   const {
-    visibleWords,
     userInput,
-    currentWordIndex,
     completedWords,
     handleKeyPress,
-    currentLine,
-    timeLeft,       // use this if needed when you fully reset the test
+    timeLeft,       
     settings,
     gameState,
     resetGame,
-  } = useTypingTestB(gameOptions);
+    currentWordIndex,
+    words
+  } = useTypingTest(gameOptions);
 
   const inputRef = useRef<HTMLInputElement>(null);
+
 
   if (gameState === GameState.Ended) {
     return (
         <>
+            <div className='mt-10'>
+              <ResetButton resetGame={resetGame}/>
+            </div>
+
             <ResultScreen completedWords={completedWords} settings={settings} />
-            <ResetButton resetGame={resetGame}/>
+
         </>
     )
   }
@@ -43,20 +50,24 @@ const TypingTest = () => {
     <section className="">
       <HiddenInput ref={inputRef} onKeyDown={handleKeyPress} />
        
-      <div className='mt-52'>
+      <div className='mt-44'>
+
+        <h2 className="text-center text-4xl font-semibold text-gray-700 mb-8">
+          {mode === 'random' ? 'Randomized Word Test' : 'Adapted Word Test'}
+        </h2>
+
         <Timer
             duration={gameOptions.gameDuration}
             timeLeft={timeLeft}
         />
 
         <TextTypingArea
-            visibleWords={visibleWords}
+            words={words}
             currentWordIndex={currentWordIndex}
+
             userInput={userInput}
-            completedWords={completedWords.map(w => w.typedWord)}
-            currentLine={currentLine}
-            wordsPerLine={gameOptions.wordsPerLine}
-            hiddenInputAreaRef={inputRef}
+            completedWords={completedWords}
+            hiddenInputRef={inputRef}
         />
       </div> 
       

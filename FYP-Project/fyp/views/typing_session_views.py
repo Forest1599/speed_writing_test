@@ -36,11 +36,25 @@ class TypingSessionCreateView(generics.CreateAPIView):
 class GetWordView(generics.GenericAPIView):
     permission_classes = [AllowAny]
 
-    def get(self, request):
-        
-        if not request.user.is_authenticated:
-            word_batch = generate_words_for_user(None)
-        else:
+
+    def get(self, request) -> Response:
+        mode = request.query_params.get("mode")
+
+        if mode not in ['random', 'adaptive']:
+            return Response({"error": "Invalid mode parameter."}, status=400)
+
+        if mode == 'adaptive':
+            if not request.user:
+                return Response({"error": "Authenticaton required for adaptive mode."}, status=403)
+
+                
+            # Generates words based on users past experience
             word_batch = generate_words_for_user(request.user)
+        else:
+            # Random words generated or invalid fallback
+            word_batch = generate_words_for_user(None)
+
+        # Adds the mode to the settings
+        word_batch["settings"]["mode"] = mode
 
         return Response(word_batch)

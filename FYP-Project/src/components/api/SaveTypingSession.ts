@@ -9,6 +9,7 @@ const SaveTypingSession = async (
   minWordLength: number,
   maxWordLength: number,
   frequencyRank: number,
+  mode: string,
   wordsToStore: CompletedWord[],
 ) => {
   try {
@@ -28,6 +29,7 @@ const SaveTypingSession = async (
       max_word_length: maxWordLength,
       frequency_rank: frequencyRank,
       word_performances: payloadWords,
+      mode: mode
     });
 
     console.log("Session saved:", response.data); // DEBUG ONLY

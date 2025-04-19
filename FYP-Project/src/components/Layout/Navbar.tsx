@@ -30,7 +30,9 @@ const Navbar = () => {
                 </div>
 
                 <div>
-                    <a href="#"><FontAwesomeIcon className="navbar-btn" icon={faChartSimple} /></a>
+                    <Link to={isLoggedIn ? "/adaptive" : "/login"}>
+                        <FontAwesomeIcon className="navbar-btn" icon={faChartSimple} />
+                    </Link>
                 </div>
             </div>
 
