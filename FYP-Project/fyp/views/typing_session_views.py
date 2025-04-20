@@ -44,7 +44,7 @@ class GetWordView(generics.GenericAPIView):
             return Response({"error": "Invalid mode parameter."}, status=400)
 
         if mode == 'adaptive':
-            if not request.user:
+            if not request.user.is_authenticated:
                 return Response({"error": "Authenticaton required for adaptive mode."}, status=403)
 
                 

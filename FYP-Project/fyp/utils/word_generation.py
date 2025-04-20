@@ -37,24 +37,22 @@ def get_typing_difficulty(user):
         min_len = DEFAULT_MIN_LEN
         max_len = DEFAULT_MAX_LEN
         freq_rank = DEFAULT_FREQ_RANK
-        
+    
     # Only adapt difficulty every 3rd session
     if session_count >= 3 and session_count % 3 == 0:
         latest = all_sessions[0]
-        recent_sessions = all_sessions[1:4]  # last 3 before latest
+        recent_sessions = list(all_sessions)[1:4]  # last 3 before latest
 
         avg_wpm = sum(s.wpm for s in recent_sessions) / len(recent_sessions)
-        avg_accuracy = sum(s.accuracy for s in recent_sessions) / len(recent_sessions)
 
         wpm_change = ((latest.wpm - avg_wpm) / avg_wpm) * 100 if avg_wpm else 0
-        acc_change = latest.accuracy - avg_accuracy
-
-        if wpm_change >= 10 and acc_change >= 0:
+        
+        if wpm_change >= 10:
             min_len = min(MAX_LEN_LIMIT, min_len + 1)
             max_len = min(MAX_LEN_LIMIT, max_len + 1)
             freq_rank = min(MAX_FREQ_RANK, freq_rank + 500)
 
-        elif wpm_change <= -10 and acc_change <= 0:
+        elif wpm_change <= -10:
             min_len = max(MIN_LEN_LIMIT, min_len - 1)
             max_len = max(min_len, max_len - 1)
             freq_rank = max(MIN_FREQ_RANK, freq_rank - 500)

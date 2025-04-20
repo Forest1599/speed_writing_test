@@ -57,7 +57,7 @@ type ProtectedRouteProps = {
         const decoded = jwtDecode(token);
         const tokenExpiration = decoded.exp;
 
-        const now = Date.now() / 1000
+        const now = Date.now() / 1000;
 
         // If the token expired refresh
         if (tokenExpiration != null && tokenExpiration < now) {

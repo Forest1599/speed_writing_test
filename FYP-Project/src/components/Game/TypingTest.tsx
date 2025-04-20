@@ -14,7 +14,7 @@ type TypingTestProps = {
 
 const TypingTest: React.FC<TypingTestProps> = ({mode}) => {
   const gameOptions = {
-    gameDuration: 10,
+    gameDuration: 60,
     mode: mode,
   };
 
